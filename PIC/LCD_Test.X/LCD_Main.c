@@ -228,21 +228,72 @@ unsigned int ADC_Read(unsigned char channel)
 void main(void)
 {
 ADC_Initialize();
-//int adc; //just variables
-     
+int adc; //ADC value stored
+
+
 LCD_Initialize();
 
 
   while(1)
   {
-    //adc = (ADC_Read(0));
+    adc = (ADC_Read(0));
+    char Buffer[7];
+    itoa(Buffer, adc, 10);
 
-    RC4 = 1;  // Relay OFF
-    LCDPutStr(" Hello Graham!"); //Display String "Hello Graham"
+    
+    if (adc > 700 & adc < 800)
+    {
+       LCDGoto(0,0); // first line
+        LCDPutStr(" 1 second delay     ");
+        LCDPutCmd(LCD_HOME);
+        RC4 = 0;  // Relay on
+         __delay_ms(1000);
+        RC4 = 1; // Relay off
+        LCDPutStr("                    "); 
+        LCDPutCmd(LCD_HOME);
+    }
+    else if (adc > 600 & adc < 700)
+    {
+        LCDGoto(0,0); // first line
+        LCDPutStr(" 2 second delay     ");
+        LCDPutCmd(LCD_HOME);
+        RC4 = 0;  // Relay on
+         __delay_ms(2000);
+        RC4 = 1; // Relay off
+        LCDPutStr("                    "); 
+        LCDPutCmd(LCD_HOME);
+    }
+    else if (adc > 500 & adc < 600)
+    {
+        LCDGoto(0,0); // first line
+        LCDPutStr(" 5 second delay     ");
+        LCDPutCmd(LCD_HOME);       
+        RC4 = 0;  // Relay on
+         __delay_ms(5000);
+        RC4 = 1; // Relay off
+        LCDPutStr("                    "); 
+        LCDPutCmd(LCD_HOME);
+    }
+    else if (adc < 10)
+    {
+        LCDGoto(0,0); // first line
+        LCDPutStr("10 second delay     ");
+        LCDPutCmd(LCD_HOME);
+        RC4 = 0;  // Relay on
+         __delay_ms(10000);
+        RC4 = 1; // Relay off
+        LCDPutStr("                    "); 
+        LCDPutCmd(LCD_HOME);
+    }
+    else
+    {
+     RC4 = 1; // Relay off
+    }
+    
     LCDGoto(0,1); //Go to column 8 of second line
-    LCDPutStr("It works"); //Display String 'it works'
-    __delay_ms(2000);
-    LCDPutCmd(LCD_CLEAR);
+    LCDPutStr(Buffer); //Display String 'it works'
+
+   // LCDPutCmd(LCD_CLEAR);
 
   }
   return;
