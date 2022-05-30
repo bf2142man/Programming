@@ -225,64 +225,94 @@ unsigned int ADC_Read(unsigned char channel)
 
 }
 
+
 void main(void)
 {
 ADC_Initialize();
 int adc; //ADC value stored
-
-
+int ExposureTime = 0;
 LCD_Initialize();
+int i;
+char Buffer[7];
+char ExpTime[6];
+char iTime[6];
 
 
-  while(1)
+LCDGoto(0,0); // first line
+LCDPutStr("    ENLARGER  ");
+LCDGoto(0,1); // first line
+LCDPutStr("    TIMER V1  ");
+__delay_ms(4000);
+LCDPutCmd(LCD_CLEAR);
+
+while(1)
   {
     adc = (ADC_Read(0));
-    char Buffer[7];
+ 
+    
     itoa(Buffer, adc, 10);
 
     
     if (adc > 700 & adc < 800)
     {
-       LCDGoto(0,0); // first line
-        LCDPutStr(" 1 second delay     ");
+        ExposureTime++;// Increasing exposure time
+        if (ExposureTime >99) ExposureTime = 99;
+        itoa(ExpTime, ExposureTime, 10); 
+        LCDGoto(0,0); // first line
+        LCDPutStr(ExpTime);
+        LCDPutStr(" sec exposure ");
         LCDPutCmd(LCD_HOME);
-        RC4 = 0;  // Relay on
-         __delay_ms(1000);
-        RC4 = 1; // Relay off
-        LCDPutStr("                    "); 
-        LCDPutCmd(LCD_HOME);
+        __delay_ms(200);
     }
     else if (adc > 600 & adc < 700)
     {
+        ExposureTime--;// Decrease exposure time
+        if (ExposureTime <1) ExposureTime = 1;
+        itoa(ExpTime, ExposureTime, 10);         
         LCDGoto(0,0); // first line
-        LCDPutStr(" 2 second delay     ");
+        LCDPutStr(ExpTime);
+        LCDPutStr(" sec exposure  ");
         LCDPutCmd(LCD_HOME);
-        RC4 = 0;  // Relay on
-         __delay_ms(2000);
-        RC4 = 1; // Relay off
-        LCDPutStr("                    "); 
-        LCDPutCmd(LCD_HOME);
+        __delay_ms(200);
+        LCDGoto(0,0); // first line
+
     }
     else if (adc > 500 & adc < 600)
     {
-        LCDGoto(0,0); // first line
-        LCDPutStr(" 5 second delay     ");
-        LCDPutCmd(LCD_HOME);       
-        RC4 = 0;  // Relay on
-         __delay_ms(5000);
-        RC4 = 1; // Relay off
-        LCDPutStr("                    "); 
+        // RESET CONDITION
+        LCDGoto(5,0); // first line
+        LCDPutStr("RESET");
+        __delay_ms(1000);
+        ExposureTime = 1;
+        memset(ExpTime, '\0', sizeof(ExpTime));
+        ExpTime[0] = '1';
         LCDPutCmd(LCD_HOME);
+        LCDPutStr("    ENLARGER  ");
+        LCDGoto(0,1); // first line
+        LCDPutStr("    TIMER V1  ");
+        __delay_ms(4000);
+        LCDPutCmd(LCD_CLEAR);
     }
     else if (adc < 10)
     {
         LCDGoto(0,0); // first line
-        LCDPutStr("10 second delay     ");
+        LCDPutStr(ExpTime);
+        LCDPutStr(" sec exposure ");
+        LCDGoto(0,1); // second line
+        LCDPutStr("                ");
         LCDPutCmd(LCD_HOME);
         RC4 = 0;  // Relay on
-         __delay_ms(10000);
+        i = 0;
+        for (i=0;i< ExposureTime;i++)
+        {
+            __delay_ms(1000);
+            itoa(iTime, i+1, 10); 
+            LCDGoto(0,1); // second line
+            LCDPutStr(iTime);
+            LCDPutStr(" sec last exp");
+        }
+         
         RC4 = 1; // Relay off
-        LCDPutStr("                    "); 
         LCDPutCmd(LCD_HOME);
     }
     else
@@ -290,10 +320,10 @@ LCD_Initialize();
      RC4 = 1; // Relay off
     }
     
-    LCDGoto(0,1); //Go to column 8 of second line
-    LCDPutStr(Buffer); //Display String 'it works'
+   // LCDGoto(0,1); //Go to column 0 of second line
+   // LCDPutStr(Buffer); //Display String
 
-   // LCDPutCmd(LCD_CLEAR);
+
 
   }
   return;

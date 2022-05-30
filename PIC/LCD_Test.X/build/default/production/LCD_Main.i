@@ -2922,64 +2922,94 @@ unsigned int ADC_Read(unsigned char channel)
 
 }
 
+
 void main(void)
 {
 ADC_Initialize();
 int adc;
-
-
+int ExposureTime = 0;
 LCD_Initialize();
+int i;
+char Buffer[7];
+char ExpTime[6];
+char iTime[6];
 
 
-  while(1)
+LCDGoto(0,0);
+LCDPutStr("    ENLARGER  ");
+LCDGoto(0,1);
+LCDPutStr("    TIMER V1  ");
+_delay((unsigned long)((4000)*(4194304/4000.0)));
+LCDPutCmd(0x01);
+
+while(1)
   {
     adc = (ADC_Read(0));
-    char Buffer[7];
+
+
     itoa(Buffer, adc, 10);
 
 
     if (adc > 700 & adc < 800)
     {
-       LCDGoto(0,0);
-        LCDPutStr(" 1 second delay     ");
+        ExposureTime++;
+        if (ExposureTime >99) ExposureTime = 99;
+        itoa(ExpTime, ExposureTime, 10);
+        LCDGoto(0,0);
+        LCDPutStr(ExpTime);
+        LCDPutStr(" sec exposure ");
         LCDPutCmd(0x02);
-        RC4 = 0;
-         _delay((unsigned long)((1000)*(4194304/4000.0)));
-        RC4 = 1;
-        LCDPutStr("                    ");
-        LCDPutCmd(0x02);
+        _delay((unsigned long)((200)*(4194304/4000.0)));
     }
     else if (adc > 600 & adc < 700)
     {
+        ExposureTime--;
+        if (ExposureTime <1) ExposureTime = 1;
+        itoa(ExpTime, ExposureTime, 10);
         LCDGoto(0,0);
-        LCDPutStr(" 2 second delay     ");
+        LCDPutStr(ExpTime);
+        LCDPutStr(" sec exposure  ");
         LCDPutCmd(0x02);
-        RC4 = 0;
-         _delay((unsigned long)((2000)*(4194304/4000.0)));
-        RC4 = 1;
-        LCDPutStr("                    ");
-        LCDPutCmd(0x02);
+        _delay((unsigned long)((200)*(4194304/4000.0)));
+        LCDGoto(0,0);
+
     }
     else if (adc > 500 & adc < 600)
     {
-        LCDGoto(0,0);
-        LCDPutStr(" 5 second delay     ");
+
+        LCDGoto(5,0);
+        LCDPutStr("RESET");
+        _delay((unsigned long)((1000)*(4194304/4000.0)));
+        ExposureTime = 1;
+        memset(ExpTime, '\0', sizeof(ExpTime));
+        ExpTime[0] = '1';
         LCDPutCmd(0x02);
-        RC4 = 0;
-         _delay((unsigned long)((5000)*(4194304/4000.0)));
-        RC4 = 1;
-        LCDPutStr("                    ");
-        LCDPutCmd(0x02);
+        LCDPutStr("    ENLARGER  ");
+        LCDGoto(0,1);
+        LCDPutStr("    TIMER V1  ");
+        _delay((unsigned long)((4000)*(4194304/4000.0)));
+        LCDPutCmd(0x01);
     }
     else if (adc < 10)
     {
         LCDGoto(0,0);
-        LCDPutStr("10 second delay     ");
+        LCDPutStr(ExpTime);
+        LCDPutStr(" sec exposure ");
+        LCDGoto(0,1);
+        LCDPutStr("                ");
         LCDPutCmd(0x02);
         RC4 = 0;
-         _delay((unsigned long)((10000)*(4194304/4000.0)));
+        i = 0;
+        for (i=0;i< ExposureTime;i++)
+        {
+            _delay((unsigned long)((1000)*(4194304/4000.0)));
+            itoa(iTime, i+1, 10);
+            LCDGoto(0,1);
+            LCDPutStr(iTime);
+            LCDPutStr(" sec last exp");
+        }
+
         RC4 = 1;
-        LCDPutStr("                    ");
         LCDPutCmd(0x02);
     }
     else
@@ -2987,8 +3017,8 @@ LCD_Initialize();
      RC4 = 1;
     }
 
-    LCDGoto(0,1);
-    LCDPutStr(Buffer);
+
+
 
 
 
