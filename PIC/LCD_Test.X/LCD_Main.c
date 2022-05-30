@@ -5,14 +5,13 @@
  * Created on 28/05/2022
  */
 
-#include <xc.h>
 #include "config.h"
-#define _XTAL_FREQ 4194304 // 4.194304MHz
 #include <xc.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
+#define _XTAL_FREQ 4194304 // 4.194304MHz
 #define __delay_ms(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4000.0)))
 // set up the timing for the LCD delays
 #define LCD_delay 5 // ~5mS
@@ -280,6 +279,7 @@ while(1)
     else if (adc > 500 & adc < 600)
     {
         // RESET CONDITION
+        LCDPutCmd(LCD_CLEAR);
         LCDGoto(5,0); // first line
         LCDPutStr("RESET");
         __delay_ms(1000);

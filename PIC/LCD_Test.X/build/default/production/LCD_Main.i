@@ -14,6 +14,27 @@
 
 
 
+# 1 "./config.h" 1
+# 14 "./config.h"
+#pragma config FOSC = XT
+#pragma config WDTE = OFF
+#pragma config PWRTE = ON
+#pragma config MCLRE = ON
+#pragma config CP = OFF
+#pragma config CPD = OFF
+#pragma config BOREN = ON
+#pragma config IESO = OFF
+#pragma config FCMEN = OFF
+#pragma config LVP = OFF
+
+
+#pragma config BOR4V = BOR40V
+#pragma config WRT = OFF
+
+
+
+
+
 # 1 "C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42/xc8\\pic\\include\\xc.h" 1 3
 # 18 "C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42/xc8\\pic\\include\\xc.h" 3
 extern const char __xc8_OPTIM_SPEED;
@@ -2511,25 +2532,8 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 29 "C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42/xc8\\pic\\include\\xc.h" 2 3
+# 33 "./config.h" 2
 # 9 "LCD_Main.c" 2
-# 1 "./config.h" 1
-# 14 "./config.h"
-#pragma config FOSC = XT
-#pragma config WDTE = OFF
-#pragma config PWRTE = ON
-#pragma config MCLRE = ON
-#pragma config CP = OFF
-#pragma config CPD = OFF
-#pragma config BOREN = ON
-#pragma config IESO = OFF
-#pragma config FCMEN = OFF
-#pragma config LVP = OFF
-
-
-#pragma config BOR4V = BOR40V
-#pragma config WRT = OFF
-# 10 "LCD_Main.c" 2
-
 
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.36\\pic\\include\\c90\\stdio.h" 1 3
 
@@ -2628,7 +2632,7 @@ extern int vsscanf(const char *, const char *, va_list) __attribute__((unsupport
 #pragma printf_check(sprintf) const
 extern int sprintf(char *, const char *, ...);
 extern int printf(const char *, ...);
-# 13 "LCD_Main.c" 2
+# 11 "LCD_Main.c" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.36\\pic\\include\\c90\\string.h" 1 3
 # 14 "C:\\Program Files\\Microchip\\xc8\\v2.36\\pic\\include\\c90\\string.h" 3
 extern void * memcpy(void *, const void *, size_t);
@@ -2660,7 +2664,7 @@ extern char * strchr(const char *, int);
 extern char * strichr(const char *, int);
 extern char * strrchr(const char *, int);
 extern char * strrichr(const char *, int);
-# 14 "LCD_Main.c" 2
+# 12 "LCD_Main.c" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.36\\pic\\include\\c90\\stdlib.h" 1 3
 
 
@@ -2744,8 +2748,8 @@ extern char * ltoa(char * buf, long val, int base);
 extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
-# 15 "LCD_Main.c" 2
-# 52 "LCD_Main.c"
+# 13 "LCD_Main.c" 2
+# 51 "LCD_Main.c"
 void LCD_Initialize(void);
 void LCDPutChar(char ch);
 void LCDPutCmd(char ch);
@@ -2977,6 +2981,7 @@ while(1)
     else if (adc > 500 & adc < 600)
     {
 
+        LCDPutCmd(0x01);
         LCDGoto(5,0);
         LCDPutStr("RESET");
         _delay((unsigned long)((1000)*(4194304/4000.0)));
