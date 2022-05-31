@@ -3007,7 +3007,7 @@ while(1)
         i = 0;
         for (i=0;i< ExposureTime;i++)
         {
-            _delay((unsigned long)((1000)*(4194304/4000.0)));
+            _delay((unsigned long)((915)*(4194304/4000.0)));
             itoa(iTime, i+1, 10);
             LCDGoto(0,1);
             LCDPutStr(iTime);

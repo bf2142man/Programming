@@ -928,8 +928,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;LCD_Main.c: 307:         {
 {
 "308
-[; ;LCD_Main.c: 308:             _delay((unsigned long)((1000)*(4194304/4000.0)));
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 4194304 `l `d .4000.0 `ul ]
+[; ;LCD_Main.c: 308:             _delay((unsigned long)((915)*(4194304/4000.0)));
+[e ( __delay (1 -> * -> -> 915 `i `d / -> -> 4194304 `l `d .4000.0 `ul ]
 "309
 [; ;LCD_Main.c: 309:             itoa(iTime, i+1, 10);
 [e ( _itoa (3 , , &U _iTime + _i -> 1 `i -> 10 `i ]

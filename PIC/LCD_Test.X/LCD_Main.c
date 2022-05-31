@@ -305,7 +305,7 @@ while(1)
         i = 0;
         for (i=0;i< ExposureTime;i++)
         {
-            __delay_ms(1000);
+            __delay_ms(915);// 1 second when combined with loop processing time
             itoa(iTime, i+1, 10); 
             LCDGoto(0,1); // second line
             LCDPutStr(iTime);
