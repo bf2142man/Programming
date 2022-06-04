@@ -229,7 +229,7 @@ void main(void)
 {
 ADC_Initialize();
 int adc; //ADC value stored
-int ExposureTime = 0;
+int ExposureTime = 1;
 LCD_Initialize();
 int i;
 char Buffer[7];
@@ -296,6 +296,7 @@ while(1)
     else if (adc < 10)
     {
         LCDGoto(0,0); // first line
+        itoa(ExpTime, ExposureTime, 10); 
         LCDPutStr(ExpTime);
         LCDPutStr(" sec exposure ");
         LCDGoto(0,1); // second line
